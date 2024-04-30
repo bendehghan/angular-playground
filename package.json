@@ -1,125 +1,125 @@
 {
-  "name": "angular-playground",
-  "version": "11.0.0",
-  "description": "A drop in app module for working on Angular components in isolation (aka Scenario Driven Development).",
-  "module": "dist/playground/fesm2015/angular-playground.mjs",
-  "es2020": "dist/playground/fesm2020/angular-playground.mjs",
-  "esm2020": "dist/playground/esm2020/angular-playground.mjs",
-  "fesm2020": "dist/playground/fesm2020/angular-playground.mjs",
-  "fesm2015": "dist/playground/fesm2015/angular-playground.mjs",
-  "typings": "dist/playground/index.d.ts",
-  "exports": {
-    "./package.json": {
-      "default": "./package.json"
+    "name": "angular-playground",
+    "version": "17.0.0",
+    "description": "A drop in app module for working on Angular components in isolation (aka Scenario Driven Development).",
+    "module": "dist/playground/fesm2015/angular-playground.mjs",
+    "es2020": "dist/playground/fesm2020/angular-playground.mjs",
+    "esm2020": "dist/playground/esm2020/angular-playground.mjs",
+    "fesm2020": "dist/playground/fesm2020/angular-playground.mjs",
+    "fesm2015": "dist/playground/fesm2015/angular-playground.mjs",
+    "typings": "dist/playground/index.d.ts",
+    "exports": {
+        "./package.json": {
+            "default": "./package.json"
+        },
+        ".": {
+            "types": "./dist/playground/index.d.ts",
+            "esm2020": "./dist/playground/esm2020/angular-playground.mjs",
+            "es2020": "./dist/playground/fesm2020/angular-playground.mjs",
+            "es2015": "./dist/playground/fesm2015/angular-playground.mjs",
+            "node": "./dist/playground/fesm2015/angular-playground.mjs",
+            "default": "./dist/playground/fesm2020/angular-playground.mjs"
+        }
     },
-    ".": {
-      "types": "./dist/playground/index.d.ts",
-      "esm2020": "./dist/playground/esm2020/angular-playground.mjs",
-      "es2020": "./dist/playground/fesm2020/angular-playground.mjs",
-      "es2015": "./dist/playground/fesm2015/angular-playground.mjs",
-      "node": "./dist/playground/fesm2015/angular-playground.mjs",
-      "default": "./dist/playground/fesm2020/angular-playground.mjs"
-    }
-  },
-  "sideEffects": false,
-  "bin": {
-    "angular-playground": "dist/bin/index.js"
-  },
-  "files": [
-    "dist"
-  ],
-  "jest": {
-    "transform": {
-      "\\.ts$": "ts-jest"
+    "sideEffects": false,
+    "bin": {
+        "angular-playground": "dist/bin/index.js"
     },
-    "testRegex": ".*\\.spec\\.ts$",
-    "moduleFileExtensions": [
-      "ts",
-      "js",
-      "json"
+    "files": [
+        "dist"
     ],
-    "testURL": "http://localhost"
-  },
-  "scripts": {
-    "build": "npm run playground:build && npm run cli:build && npm run schematics:build && npm run copy-jest-files",
-    "rebuild": "npm run clean && npm run build",
-    "clean": "rm -f -r dist",
-    "playground:build": "ng build playground --configuration production && rm dist/playground/package.json",
-    "cli:build": "tsc -p ./projects/cli/tsconfig.json",
-    "copy:schemas": "gcp projects/schematics/src/sandbox/schema.json dist/schematics/sandbox",
-    "copy:schematicFiles": "cd ./projects/schematics/src && gcp -r --parent ./**/files/* ../../../dist/schematics && gcp -r --parent ./**/**/files/* ../../../dist/schematics",
-    "copy:sandboxFiles": "gcp -r projects/schematics/src/sandbox/files dist/schematics/sandbox",
-    "copy:collection": "gcp projects/schematics/src/collection.json dist/schematics/collection.json",
-    "copy:migration": "gcp projects/schematics/src/migrations/migrations.json dist/schematics/migrations/migrations.json",
-    "schematics:build": "tsc -p ./projects/schematics/tsconfig.json",
-    "prepublishOnly": "npm run rebuild",
-    "test": "jest",
-    "copy-jest-files": "rm -f -r dist/jest && cd dist && mkdir jest && cd .. && gcp projects/jest/src/* dist/jest",
-    "postbuild": "npm run copy:schemas && npm run copy:sandboxFiles && npm run copy:collection && npm run copy:migration && npm run copy:schematicFiles"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SoCreate/angular-playground.git"
-  },
-  "keywords": [
-    "angular"
-  ],
-  "author": {
-    "name": "SoCreate",
-    "url": "https://SoCreate.it"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/SoCreate/angular-playground/issues"
-  },
-  "homepage": "http://www.angularplayground.it",
-  "schematics": "./dist/schematics/collection.json",
-  "ng-add": {
-    "save": "devDependencies"
-  },
-  "ng-update": {
-    "migrations": "./dist/schematics/migrations/migrations.json"
-  },
-  "peerDependencies": {
-    "rxjs": ">=7.5.0",
-    "tslib": ">=2.3.0"
-  },
-  "dependencies": {
-    "@angular-devkit/core": "^17.3.6",
-    "@angular-devkit/schematics": "^17.3.6",
-    "@jest/core": "29.7.0",
-    "@jest/types": "29.6.3",
-    "@schematics/angular": "^17.3.6",
-    "async": "^3.2.5",
-    "chalk": "^5.3.0",
-    "commander": "^12.0.0",
-    "get-port": "^7.1.0",
-    "jest": "29.7.0",
-    "jest-image-snapshot": "6.4.0",
-    "mockdate": "^3.0.5",
-    "node-watch": "^0.7.4",
-    "puppeteer": "^22.7.1"
-  },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "17.3.6",
-    "@angular/cli": "17.3.6",
-    "@angular/common": "17.3.6",
-    "@angular/compiler": "17.3.6",
-    "@angular/compiler-cli": "17.3.6",
-    "@angular/core": "17.3.6",
-    "@angular/forms": "17.3.6",
-    "@angular/language-service": "17.3.6",
-    "@angular/platform-browser": "17.3.6",
-    "@angular/platform-browser-dynamic": "17.3.6",
-    "@types/jest": "29.5.12",
-    "@types/node": "^20.12.7",
-    "@types/puppeteer": "^5.4.7",
-    "jest-environment-jsdom": "29.7.0",
-    "ng-packagr": "17.3.0",
-    "rxjs": "~7.8.1",
-    "ts-jest": "29.1.2",
-    "tslib": "^2.6.2",
-    "typescript": "~5.4.5",
-    "zone.js": "~0.14.4"
-  }
+    "jest": {
+        "transform": {
+            "\\.ts$": "ts-jest"
+        },
+        "testRegex": ".*\\.spec\\.ts$",
+        "moduleFileExtensions": [
+            "ts",
+            "js",
+            "json"
+        ],
+        "testURL": "http://localhost"
+    },
+    "scripts": {
+        "build": "npm run playground:build && npm run cli:build && npm run schematics:build && npm run copy-jest-files",
+        "rebuild": "npm run clean && npm run build",
+        "clean": "rm -f -r dist",
+        "playground:build": "ng build playground --configuration production && rm dist/playground/package.json",
+        "cli:build": "tsc -p ./projects/cli/tsconfig.json",
+        "copy:schemas": "gcp projects/schematics/src/sandbox/schema.json dist/schematics/sandbox",
+        "copy:schematicFiles": "cd ./projects/schematics/src && gcp -r --parent ./**/files/* ../../../dist/schematics && gcp -r --parent ./**/**/files/* ../../../dist/schematics",
+        "copy:sandboxFiles": "gcp -r projects/schematics/src/sandbox/files dist/schematics/sandbox",
+        "copy:collection": "gcp projects/schematics/src/collection.json dist/schematics/collection.json",
+        "copy:migration": "gcp projects/schematics/src/migrations/migrations.json dist/schematics/migrations/migrations.json",
+        "schematics:build": "tsc -p ./projects/schematics/tsconfig.json",
+        "prepublishOnly": "npm run rebuild",
+        "test": "jest",
+        "copy-jest-files": "rm -f -r dist/jest && cd dist && mkdir jest && cd .. && gcp projects/jest/src/* dist/jest",
+        "postbuild": "npm run copy:schemas && npm run copy:sandboxFiles && npm run copy:collection && npm run copy:migration && npm run copy:schematicFiles"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/SoCreate/angular-playground.git"
+    },
+    "keywords": [
+        "angular"
+    ],
+    "author": {
+        "name": "SoCreate",
+        "url": "https://SoCreate.it"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/SoCreate/angular-playground/issues"
+    },
+    "homepage": "http://www.angularplayground.it",
+    "schematics": "./dist/schematics/collection.json",
+    "ng-add": {
+        "save": "devDependencies"
+    },
+    "ng-update": {
+        "migrations": "./dist/schematics/migrations/migrations.json"
+    },
+    "peerDependencies": {
+        "rxjs": ">=7.5.0",
+        "tslib": ">=2.3.0"
+    },
+    "dependencies": {
+        "@angular-devkit/core": "^17.3.6",
+        "@angular-devkit/schematics": "^17.3.6",
+        "@jest/core": "29.7.0",
+        "@jest/types": "29.6.3",
+        "@schematics/angular": "^17.3.6",
+        "async": "^3.2.5",
+        "chalk": "^5.3.0",
+        "commander": "^12.0.0",
+        "get-port": "^7.1.0",
+        "jest": "29.7.0",
+        "jest-image-snapshot": "6.4.0",
+        "mockdate": "^3.0.5",
+        "node-watch": "^0.7.4",
+        "puppeteer": "^22.7.1"
+    },
+    "devDependencies": {
+        "@angular-devkit/build-angular": "17.3.6",
+        "@angular/cli": "17.3.6",
+        "@angular/common": "17.3.6",
+        "@angular/compiler": "17.3.6",
+        "@angular/compiler-cli": "17.3.6",
+        "@angular/core": "17.3.6",
+        "@angular/forms": "17.3.6",
+        "@angular/language-service": "17.3.6",
+        "@angular/platform-browser": "17.3.6",
+        "@angular/platform-browser-dynamic": "17.3.6",
+        "@types/jest": "29.5.12",
+        "@types/node": "^20.12.7",
+        "@types/puppeteer": "^5.4.7",
+        "jest-environment-jsdom": "29.7.0",
+        "ng-packagr": "17.3.0",
+        "rxjs": "~7.8.1",
+        "ts-jest": "29.1.2",
+        "tslib": "^2.6.2",
+        "typescript": "~5.4.5",
+        "zone.js": "~0.14.4"
+    }
 }
