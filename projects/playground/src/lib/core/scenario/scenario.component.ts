@@ -9,20 +9,23 @@ import {
     OnDestroy,
     OnInit,
     SimpleChanges,
-    ɵresetCompiledComponents as resetCompiledComponents
-} from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { Scenario, SelectedSandboxAndScenarioKeys, Sandbox } from '../../lib/app-state';
-import { BrowserModule } from '@angular/platform-browser';
-import { Middleware, MIDDLEWARE } from '../../lib/middlewares';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+    ɵresetCompiledComponents as resetCompiledComponents,
+} from "@angular/core";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+import {
+    Scenario,
+    SelectedSandboxAndScenarioKeys,
+    Sandbox,
+} from "../../lib/app-state";
+import { BrowserModule } from "@angular/platform-browser";
+import { Middleware, MIDDLEWARE } from "../../lib/middlewares";
+import { takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
 import { Sandboxes } from "../shared/sandboxes";
 
 @Component({
-    selector: 'ap-scenario',
-    template: `
-        <ng-template></ng-template>`,
+    selector: "ap-scenario",
+    template: ` <ng-template></ng-template>`,
 })
 export class ScenarioComponent implements OnInit, OnChanges, OnDestroy {
     /**
@@ -45,18 +48,23 @@ export class ScenarioComponent implements OnInit, OnChanges, OnDestroy {
      */
     private onDestroy = new Subject<void>();
 
-    constructor(private zone: NgZone, @Inject(MIDDLEWARE) private middleware, private sanboxes: Sandboxes) {
-    }
+    constructor(
+        private zone: NgZone,
+        @Inject(MIDDLEWARE) private middleware,
+        private sanboxes: Sandboxes
+    ) {}
 
     ngOnInit() {
         this.middleware
             .pipe(takeUntil(this.onDestroy))
-            .subscribe(middlewares => this.activeMiddleware = middlewares);
+            .subscribe((middlewares) => (this.activeMiddleware = middlewares));
     }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.selectedSandboxAndScenarioKeys) {
-            this.bootstrapSandbox(changes.selectedSandboxAndScenarioKeys.currentValue);
+            this.bootstrapSandbox(
+                changes.selectedSandboxAndScenarioKeys.currentValue
+            );
         }
     }
 
@@ -70,7 +78,7 @@ export class ScenarioComponent implements OnInit, OnChanges, OnDestroy {
             app.destroy();
 
             // remove the sandboxed component's element from the dom
-            const hostElement = document.querySelector('playground-host');
+            const hostElement = document.querySelector("playground-host");
             if (hostElement && hostElement.children) {
                 hostElement.children[0].remove();
             }
@@ -80,36 +88,48 @@ export class ScenarioComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * Bootstrap a new Angular application with the sandbox's required dependencies
      */
-    private bootstrapSandbox(selectedSandboxAndScenarioKeys: SelectedSandboxAndScenarioKeys) {
-        this.sanboxes.getSandbox(selectedSandboxAndScenarioKeys.sandboxKey).then(sandbox => {
-            if (sandbox) {
-                const scenario = sandbox.scenarios
-                    .find((s: Scenario) => s.key === selectedSandboxAndScenarioKeys.scenarioKey);
+    private bootstrapSandbox(
+        selectedSandboxAndScenarioKeys: SelectedSandboxAndScenarioKeys
+    ) {
+        this.sanboxes
+            .getSandbox(selectedSandboxAndScenarioKeys.sandboxKey)
+            .then((sandbox) => {
+                if (sandbox) {
+                    const scenario = sandbox.scenarios.find(
+                        (s: Scenario) =>
+                            s.key === selectedSandboxAndScenarioKeys.scenarioKey
+                    );
 
-                if (scenario) {
-                    if (this.activeApps.length > 0) {
-                        const app = this.activeApps.pop();
-                        app.destroy();
+                    if (scenario) {
+                        if (this.activeApps.length > 0) {
+                            const app = this.activeApps.pop();
+                            app.destroy();
+                        }
+
+                        // Don't bootstrap a new Angular application within an existing zone
+                        this.zone.runOutsideAngular(() => {
+                            const module = this.createModule(sandbox, scenario);
+                            platformBrowserDynamic()
+                                .bootstrapModule(module)
+                                .then((app) => {
+                                    this.activeApps.push(app);
+                                    resetCompiledComponents();
+                                    (
+                                        window as any
+                                    ).isPlaygroundComponentLoaded = () => true;
+                                })
+                                .catch((err) => {
+                                    resetCompiledComponents();
+                                    (
+                                        window as any
+                                    ).isPlaygroundComponentLoadedWithErrors =
+                                        () => true;
+                                    console.error(err);
+                                });
+                        });
                     }
-
-                    // Don't bootstrap a new Angular application within an existing zone
-                    this.zone.runOutsideAngular(() => {
-                        const module = this.createModule(sandbox, scenario);
-                        platformBrowserDynamic().bootstrapModule(module)
-                            .then(app => {
-                                this.activeApps.push(app);
-                                resetCompiledComponents();
-                                (window as any).isPlaygroundComponentLoaded = () => true;
-                            })
-                            .catch(err => {
-                                resetCompiledComponents();
-                                (window as any).isPlaygroundComponentLoadedWithErrors = () => true;
-                                console.error(err);
-                            });
-                    });
                 }
-            }
-        });
+            });
     }
 
     /**
@@ -120,9 +140,9 @@ export class ScenarioComponent implements OnInit, OnChanges, OnDestroy {
 
         class DynamicModule {
             ngDoBootstrap(app) {
-                const hostEl = document.querySelector('playground-host');
+                const hostEl = document.querySelector("playground-host");
                 if (!hostEl) {
-                    const compEl = document.createElement('playground-host');
+                    const compEl = document.createElement("playground-host");
                     document.body.appendChild(compEl);
                 }
                 app.bootstrap(hostComp);
@@ -141,7 +161,7 @@ export class ScenarioComponent implements OnInit, OnChanges, OnDestroy {
                 ...sandboxMeta.declarations,
             ],
             providers: [...sandboxMeta.providers],
-            entryComponents: [hostComp, ...sandboxMeta.entryComponents],
+            // entryComponents: [hostComp, ...sandboxMeta.entryComponents],
             schemas: [...sandboxMeta.schemas],
         })(DynamicModule);
     }
@@ -157,7 +177,7 @@ export class ScenarioComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         return Component({
-            selector: 'playground-host',
+            selector: "playground-host",
             template: scenario.template,
             styles: scenario.styles,
             providers: scenario.providers,
