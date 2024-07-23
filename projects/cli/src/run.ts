@@ -1,4 +1,4 @@
-import getPort from "get-port";
+import * as getPort from "get-port";
 import { configure, Config } from "./configure";
 import { buildSandboxes } from "./build-sandboxes";
 import { startWatch } from "./start-watch";
@@ -8,8 +8,12 @@ import { buildAngularCli } from "./build-angular-cli";
 import { checkSnapshots } from "./check-snapshots";
 
 export async function run() {
+    console.log(">>>>>6627");
+    console.log(">>>>>process.argv:", process.argv);
+
     const config: Config = configure(process.argv);
 
+    console.log(`>>>>>Running with config: ${JSON.stringify(config, null, 2)}`);
     try {
         await buildSandboxes(
             config.sourceRoots,
@@ -21,6 +25,8 @@ export async function run() {
         throw err;
     }
 
+    console.log(">>>> build cli", config.build, config.buildWithServiceWorker);
+
     if (config.build || config.buildWithServiceWorker) {
         return await buildAngularCli(
             config.angularAppName,
@@ -30,6 +36,8 @@ export async function run() {
         );
     }
 
+    console.log(">>>> get port", config.verifySandboxes);
+
     if (
         config.verifySandboxes ||
         (config.checkVisualRegressions && !config.deleteSnapshots)
@@ -37,6 +45,7 @@ export async function run() {
         config.angularCliPort = await getPort({ host: config.angularCliHost });
     }
 
+    console.log(">>>> startWatch", config.watch, config.deleteSnapshots);
     if (
         (config.watch && !config.deleteSnapshots) ||
         config.verifySandboxes ||
@@ -52,6 +61,8 @@ export async function run() {
         );
     }
 
+    console.log(">>>> serveAngularCli", config.serve, config.deleteSnapshots);
+
     if (
         (config.serve && !config.deleteSnapshots) ||
         config.verifySandboxes ||
@@ -64,6 +75,8 @@ export async function run() {
         }
     }
 
+    console.log(">>>> verifySandboxes", config.verifySandboxes);
+
     if (config.verifySandboxes) {
         try {
             await verifySandboxes(config);
@@ -71,6 +84,8 @@ export async function run() {
             throw err;
         }
     }
+
+    console.log("visual regressions", config.checkVisualRegressions);
 
     if (config.checkVisualRegressions) {
         try {
