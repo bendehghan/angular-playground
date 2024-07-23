@@ -60,12 +60,24 @@ export function configure(argv: any): Config {
         .option('--defined-sandboxes-path <path>', 'Defined sandboxes path (file path for CLI to write out sandboxed scenarios)', './.angular-playground')
 
         // Build options
-        .option('--no-watch', 'Disable sandboxes watch', false)
-        .option('--no-serve', 'Disable cli serve', false)
-        .option('--no-chunk', 'Don\'t chunk sandbox files individually', false)
-        .option('--build', 'Build your sandboxes for production with service workers disabled.', false)
-        .option('--build-with-service-worker', 'Build your sandboxes with service workers enabled. Requires @angular/service-worker', false)
-        .option('--base-href <href>', 'Specify a base-href for @angular/cli build', '/')
+        .option("--no-watch", "Disable sandboxes watch", true)
+        .option("--no-serve", "Disable cli serve", true)
+        .option("--no-chunk", "Don't chunk sandbox files individually", true)
+        .option(
+            "--build",
+            "Build your sandboxes for production with service workers disabled.",
+            false
+        )
+        .option(
+            "--build-with-service-worker",
+            "Build your sandboxes with service workers enabled. Requires @angular/service-worker",
+            false
+        )
+        .option(
+            "--base-href <href>",
+            "Specify a base-href for @angular/cli build",
+            "/"
+        )
 
         // Sandbox verification
         .option('--check-errors', 'Check for errors in all scenarios in all sandboxes', false)
