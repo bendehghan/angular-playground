@@ -89,6 +89,7 @@
         "tslib": ">=2.3.0"
     },
     "dependencies": {
+        "@angular/cdk": "17.3.6",
         "@angular-devkit/core": "^17.3.6",
         "@angular-devkit/schematics": "^17.3.6",
         "@jest/core": "29.7.0",
