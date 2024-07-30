@@ -1,11 +1,11 @@
-import { Browser, ConsoleMessage } from 'puppeteer';
+import { Browser, ConsoleMessage } from "puppeteer";
 
 export function delay(ms: number) {
-  return new Promise<void>((resolve, reject) => {
-      setTimeout(() => {
-          resolve();
-      }, ms);
-  });
+    return new Promise<void>((resolve, reject) => {
+        setTimeout(() => {
+            resolve();
+        }, ms);
+    });
 }
 
 /**
@@ -13,18 +13,24 @@ export function delay(ms: number) {
  * If Chromium is not able to connect to the provided page, it will issue a series
  * of retries before it finally fails.
  */
-export async function waitForNgServe(browser: Browser, hostUrl: string, timeoutAttempts: number) {
+export async function waitForNgServe(
+    browser: Browser,
+    hostUrl: string,
+    timeoutAttempts: number
+) {
     if (timeoutAttempts === 0) {
         await browser.close();
-        throw new Error('Unable to connect to Playground.');
+        throw new Error("Unable to connect to Playground.");
     }
 
     const page = await browser.newPage();
     let ngServeErrors = 0;
 
     try {
-        page.on('console', (msg: ConsoleMessage) => {
-            if (msg.type() === 'error') {
+        page.on("console", (msg: ConsoleMessage) => {
+            console.log(`[ng serve ]: ${msg.type()} ${msg.text()}`);
+
+            if (msg.type() === "error") {
                 ngServeErrors++;
             }
         });
@@ -37,6 +43,6 @@ export async function waitForNgServe(browser: Browser, hostUrl: string, timeoutA
     }
 
     if (ngServeErrors > 0) {
-        throw new Error('ng serve failure');
+        throw new Error("ng serve failure");
     }
 }

@@ -14,6 +14,5 @@ platformBrowserDynamic()
     })
   )
   .catch((err) => {
-    console.log(">>>>>>>errorr here ");
     console.error(err);
   });
