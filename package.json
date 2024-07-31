@@ -57,7 +57,6 @@
         "copy:migration": "cp projects/schematics/src/migrations/migrations.json dist/schematics/migrations/migrations.json",
         "schematics:build": "tsc -p ./projects/schematics/tsconfig.json",
         "prepublishOnly": "npm run rebuild",
-        "prepare": "npm run rebuild",
         "test": "jest",
         "copy-jest-files": "rm -f -r dist/jest && cd dist && mkdir jest && cd .. && cp projects/jest/src/* dist/jest",
         "postbuild": "npm run copy:schemas && npm run copy:sandboxFiles && npm run copy:collection && npm run copy:migration && npm run copy:schematicFiles"
